@@ -11,7 +11,7 @@ Refer to the [Contribution Guidelines](CONTRIBUTING.md) for more details.
 - [ ] `poetry run pytest` passes locally with my changes
 - [ ] Tests have been added or updated to cover the changes
 - [ ] Documentation has been updated as needed
-- [ ] Code style checks pass (`poetry run flake8` and `poetry run black --check .`)
+- [ ] Code style checks pass
 - [ ] Commit messages follow the [Conventional Commits](https://www.conventionalcommits.org/) guidelines
 
 ## Affected Components

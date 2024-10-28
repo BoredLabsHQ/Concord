@@ -1,15 +1,28 @@
 name: CI
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
+    types: [ opened, synchronize, reopened, ready_for_review ]
     branches: [ main ]
 
 jobs:
   build:
     name: Build and Test
     runs-on: ubuntu-latest
+    if: ${{ !github.event.pull_request.draft }}
+    #    services:
+    #      neo4j:
+    #        image: neo4j:5
+    #        ports:
+    #          - 7687:7687  # Bolt port
+    #          - 7474:7474  # HTTP port
+    #        env:
+    #          NEO4J_AUTH: ${{ secrets.NEO4J_AUTH }}
+    #        options: >-
+    #          --health-cmd="cypher-shell -u neo4j -p $NEO4J_PASSWORD 'RETURN 1' || exit 1"
+    #          --health-interval=10s
+    #          --health-timeout=5s
+    #          --health-retries=5
 
     strategy:
       matrix:
@@ -23,7 +36,9 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - uses: Gr1N/setup-poetry@v9
+
+      - name: Install Poetry
+        uses: Gr1N/setup-poetry@v9
 
       - name: Install dependencies
         run: poetry install
@@ -31,5 +46,12 @@ jobs:
       - name: Run pre-commit hooks
         run: poetry run pre-commit run --all-files --show-diff-on-failure
 
+      - name: Create .env file
+        run: |
+          echo "NEO4J_AUTH=${{ secrets.NEO4J_AUTH }}" > .env
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+
       - name: Run tests
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: poetry run pytest

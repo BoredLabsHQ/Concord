@@ -93,10 +93,10 @@ We use **GitHub Actions** to automatically run tests and linters on all pull req
       poetry run flake8 concord/
       ```
 
-    - **Black**: For automatic code formatting.
+  - **YAPF**: For automatic code formatting.
 
       ```bash
-      poetry run black concord/
+      poetry run YAPF concord/
       ```
 
 - **Pre-Commit Hooks**: Set up pre-commit hooks to automate linting and testing before each commit.

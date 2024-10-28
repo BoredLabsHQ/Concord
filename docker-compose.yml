@@ -1,0 +1,11 @@
+
+services:
+  neo4j:
+    image: neo4j:5.24.2
+    container_name: neo4j-dev
+    ports:
+      - "7474:7474"    # HTTP port for Neo4j Browser
+      - "7687:7687"    # Bolt port for client connections
+    environment:
+      NEO4J_AUTH: ${NEO4J_AUTH:-neo4j/dev-password}
+    restart: unless-stopped

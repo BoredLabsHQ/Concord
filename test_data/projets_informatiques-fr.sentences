@@ -1,0 +1,146 @@
+Betterstack Monitoring API
+
+https://github.com/Its-SheldonDev/Monitoring-API
+Hello, ça existe bien, tu as pleins de frontend différents open-source qui sont conçus pour virer tous les trackers pubs etc... si tu en veux un bon pour youtube voici celui que j’héberge 
+
+https://iv.datura.network/
+
+Sinon ici tu en a pleins d'autres également 
+
+https://datura.network/
+Bonjour a tous
+Je viens aujourd'hui vous présenter un projet sur lequel je travail avec des amis dans le cadre de notre club Appen ISEN depuis quelque mois et qui va enfin se concrétiser d'ici la semaine prochaine. Pour faire simple il s'agit d'un live d'actualité technologique un peu a la underscore mais avec moins de budget (sans blague). Pour ceux qui sont intéressé voila le lien vers le trailer: https://www.instagram.com/reel/C0oaegDrfxg/?utm_source=ig_web_copy_link&igshid=N2ViNmM2MDRjNw==
+Centraliser les pubs de tous les services de streaming vidéo
+Hello la commu ! Voilà je voudrais proposer une idée de projet, mais je sais pas comment le mettre en place tellement ça à l'air énorme pour la mise en oeuvre. Je m'explique : Avec toute cette tendance des abonnements pour des services comme Youtube, Twitter (X), Facebook, etc .... pour ne plus avoir de pubs .... L'idée m'est venue de conceptualiser une plateforme web / application qui permet de centraliser ces services mais juste en captant les flux intéressants sans avoir en frontend toute l'interface bourrée de pub dans tout les sens .... Pensez-vous que c'est faisable ce genre de site / application ? Je sais que pour Youtube il y a des alternatives comme Piped ou Revanced mais dans un côté pratique avoir tout les services qui obligent à passer à la caisse juste pour éviter de consulter des pubs, ça me met hors de moi ^^
+Bon si sa vous interesse je vous
+Mai’s why not ca peut être marrant à voir dans la réalisation
+Baie de brassage et serveur dans la même phrase ça commence mal
+Bon, si sa vous interesse, je vous explique le pourquoi je veut une 3090 et le serveur que je vise.
+, j'utilise aujourd'hui un petit NUC pour faire serveur, le but quand je l'ai choisi était d'arreter mon R720 pour passer à un truc plus économe. J'ai une RAID en USB (Sabrant, une merdouille mais qui fait le job). Et surtout moins de bruit... Je vous voie déjà rire avec mes disque de 2To avec un TBW de 300To ^^ ! Mais pour mon usage, je suis LARGEEEEEE ! Sauf que je suis très limité, la machine n'est pas évolutive...
+Aujourd'hui je souhaite utiliser un GPU avec >20Go de vRam pour faire un assistant vocal à la sauce ChatGPT open source qui réponde en moins de 5 secondes.
+Je ne veut plus de baie à la maison et je ne pourrais plus accueillir de machine de 80cm mais j'ai une baie de brassage de 50cm de profondeur.
+Du coup, je vais partir sur ce boitier : https://www.alternate.fr/Inter-Tech/4U-40240-Support-Noir-Gris-Serveur-de-logement/html/product/1725907z
+Je vais très certainement prendre les composants de mon PC actuelle pour les mettre dedans ainsi que la fameuse 3090 que je cherche ^^
+Mais comme je le précise dans ma présentation, je suis alternant et je gagne genre le SMIC... Donc les finances en ce moment c'est pas ouf pour le bricolage.
+Sa va, je ne vous ai fatigué avec mon histoire ?
+Go make fils ^^
+on est pas sur le même ordre de grandeur
+et <@826147684171776102> lui compte en Pb
+Car <@162305106660818944> compte en Tb
+Tu veux pas savoir
+Tu as combien ? 🥲
+Logique ^^
+😂
+J’ai plus
+J'ai encore plus maintenant
+Tu es dans l'abu niveaux stockage
+.
+Oh madame partage
+Bonjour à tous,
+
+Je partage un petit projet qui permet de ARP ping les appareils qui sont connéctés au réseau. Pratique pour détécter potentiellement des caméras dans une location (bien qu'une solution incomplète).
+
+https://github.com/rllola/airbnb-scanner
+Petit script en développement pour facilité l'installation et la configuration d'un ordinateur Linux (testé sous Debian & Ubuntu) [BETA]
+-- https://github.com/tomnoel41/ICT-Scripts
+Si vous avez des suggestions, des bug ou autres, me MP.
+Si y'en a à qui sa intéresse j'ai un gît sur le projet de harpe laser
+Jellyfin avec reverse proxy
+UPDATEEEE
+<:heckerbillionaire:1100751120411918448> Présentation du petit projet que je développe quand j'ai le temps.
+
+Ce projet permet de suivre un domaine avec son enregistrement DNS, pour l'instant, la zone A.
+
+Pourquoi ce projet ?
+J'ai remarqué un site appelé Cyber HUB PW qui proposait un logiciel pour inverser l'adresse IP de Cloudflare.
+Malheureusement, il a disparu d'Internet il y a un peu plus d'un an.
+
+La couleur laisse encore à désirer.
+Bonsoir,
+
+J'ai un petit projet que je souhaite développer. 
+
+J'ai une infra qui tourne déjà pour moi et j'ai de la ressource pour pouvoir héberger des serveurs de jeux avec le panel Pterodactyl.
+
+Sur le modèle gratuit (mais je ne refuse pas les dons) toutefois en quantité limitée mon infra n'est pas extensible à l'infini.
+
+Si il y a d'autres besoins je peux aussi m'adapter.
+
+Voir mon infra dans la partie réservée, j'ai encore un peu de place dans ma baie.
+LLAMA LGP
+🚀  Découvrez DigiAnalytics, votre solution d'analytique web sans cookies ! 
+
+🇪🇺  Service 100% Européen
+🆓  Service Gratuit
+📈 Pour tous vos sites
+
+➔ Inscrivez vous sur notre site : https://digianalytics.fr/register
+➔ Voir la démo : https://digianalytics.fr/demo.digianalytics.fr
+Bonjour, Je travaille sur un projet qui a pour objectif d'améliorer le jeu en ligne multijoueur sur console jailbreaké (bien trop souvent bannis sans raison "valable" parles constructeurs malheureusement)
+
+J'ai déjà codé un prototype (en reprogrammant un ancien projet et en y ajoutant des fonction de communication P2P avec pouchdb comme base de données decentralisé) néanmoins il me faut un serveur Apache CouchDB qui me sert de Base de Données Racine et indispensable pour tester le projet en condition réel
+
+Je précise, la communication des jeux se fait en P2P de client a client, le serveur racine ne gère pas les paquets LAN
+
+Le serveur sera juste composé d'une base de données
+Hébergeur …
+Bonsoir mon projet c'est de créer un site internet qui vend des machines de serveur de jeux vidéo , je recherche quelqu'un qui se connait dedans
+🚀 **MOVEDIA **est une association favorisant l'accès à l'information & à l'actualité en matière de technologies (digitales et numériques) avec son média numérique.
+
+**➔ Notre site web : https://movedia.fr**
+**➔ Postuler : https://jobs.movedia.fr**
+**➔ Suivez l'actu tech depuis instagram : https://www.instagram.com/movediafr/**
+https://git.nte.infra.tutosfaciles48.fr/rneil/php-abuse/
+Un script, idéalement à coupler avec fail2ban, pour envoyer un mail à l'abuse du responsable de l'ip en question.
+Fonctionne avec le RIPE, l'ARIN, le NIC BR et l'APNIC
+Ticket bot
+https://github.com/Sayrix/ticket-bot
+Un bot de ticket qui utilise discord.js v14, les boutons, les slash commands, les select menus, les modals et un système de transcript
+Mon monstre de stockage
+Mon monstre de stockage
+Panel
+petit avancée de mon panel voici la page de service pterodactyl que je vient de terminer 🙂
+__Visualiseur STL sur Discord__
+
+Bot Discord permettant de montrer un apercu __sous différents angles__ un stl (fichier 3d) de moins de 13MO
+__Petit module NPM tout simple__
+
+L'intérêt ? Scanner un lien pour voir si il s'agit d'un lien suspect ou dangereux ou non. C'est mon 1er module, j'ai voulu essayer d'en faire un. A voir si ça vous est utile ou non.
+
+*dans la doc j'utilise seulement des .then mais vous pouvez utilisez `await/async` ça fait plus propre*
+https://www.npmjs.com/package/malicious-link-detector
+Le lien vers les offres fiveer ramène sur localhost sur la version anglaise
+Ah moi aussi
+xD
+Avec des fils
+Ben ma grand mère a tricoter
+FAIRE DES FILS MERCI
+Ah le responsive...
+c'est le responsive qui apprécie pas trop
+Yes je modifie ça
+Perso moi j'ai juste ces détails sur mobile. La note du CSS qui chevauche CSS. Et en bas à droite deux autres trucs qui se chevauchent
+Entièrement d'accord, et pour une fois que le mec se note bien, ça change
+c'est plutôt propre, la partie contact et les compteurs sont à retravailler en termes de positionnement, sinon c'est très propre.
+J'aimerais bien un petit avis sur mon portfolio j'ai pas mal bossé dessus donc bon https://youssdev.fr
+Dell infra stretched cluster sur deux datacenters
+Cluster proxmox
+Je vais bientôt balancer la version 0.0.1 de proxmox cluster, j'ai besoin d'une one page, avec le logo proxmox, un bouton télécharger, juste que ce soit beau et que w3c validator ok. Bref rien de ouf, si ya un mec de motivé par ce que moi le front je veux plus en faire... <@278087173792595969> ou <@267692578240069635>  ?
+Yop all !
+est ce que certains s'occupe de gérer des vps ?
+Je m'explique, j'ai plusieurs site basiques pour mes clients ( du wp principalement ) et j'envisage peut être de passer sur vps plutôt que de prendre des hébergement a droite à gauche à chaque fois.
+Je n'ai ni les compétence technique ni le temps de gérer la partie sécu, déploiement etc, par contre pour tout ce qui est de la partie site de mes clients bien entendu aucuns soucis la dessus.
+Du coup je me demandais si certains sont en freelance ou autre et qui propose des services d'administration vps ?
+
+le besoin est pas énorme mais je veux un truc carré 🙂
+<@826147684171776102> je te ping comme demandé par mp
+Merci d'avance!
+https://discord.com/channels/837658956502532116/972897459317645342
+Infra srv mc
+J'ai mis à jour mon portfolio pour ceux que ça intéresse : https://androne.dev , je l'ai développé avec le framework react 
+(J'ai essayé de faire quelque chose de bien car je l'ai mis dans mes lettres parcoursup 😅)
+Bonjour @everyone 
+Vous pouvez présenter vos projets sur ce salon et partager vos mises à jour.
+Veuillez créer des fils pour chaque projet, ne discutez pas directement dans ce salon.
+Pour créer un fil cliquez sur (+) a gauche de la barre de message.
+
+**Bien évidement, vos projets doivent respecter les règles du serveur.**

@@ -1,0 +1,112 @@
+Use fillets for that when you can but on the underside of a part like this the fillet won't print cleanly so chamfer is second best
+I did think I could just make the posts absolutely massive but that might look silly, although the customer would never see it
+Genius, thanks for that suggestion
+Even a small chamfer will help though because it redistributes the stresses across multiple layers instead of a single layer
+A PCB rests against all of em
+I'd go larger.  It's up to the application really.  I don't know if you need clearance around those bosses.  If not I will often make the bosses tapered (truncated cones basically)
+About that size or maybe larger?
+ok, good to know
+
+This whole feature is a "boss"
+
+Chamfer here
+gotcha
+shit
+ohhh
+Cause the edges are already chamfered
+
+
+Reduces stress risers at that corner and adds material to the boss where stresses are highest
+by boss you mean the overlay recess?
+ohh lol
+Oh no on the interface between the boss and the plane
+Like this?
+Normally I'd say use a fillet there but since it's on the underside chamfer instead
+I don't see why not, but how would that improve strength?
+I'd recommend adding a chamfer to them to give them more strength if that's an option
+the problem is that those posts break off on the original and then the buttons dont reach the overlay, and then you're just left with a huge machine that cant be ran
+The original design is some injection plastic as well
+I tested threading the screws into them a bunch of times and it didn't seem to wear down at all
+I was actually really surprised at how well the fastener posts work with the threaded hole option I chose, they work better than the original faceplate design
+Yeah for these faceplates they have to be very similar to the original. I've printed a prototype and with the overlay you cant tell the difference but its just a simple flat plane on the front so thats no biggie
+I often  use flat head screws because the countersink can act as an alignment feature for two parts
+If weight isn't a concern, heatset threaded inserts and machine screws are great
+In general if you can print a part in two or more pieces to avoid supports that's preferable but sometimes you just need a monolithic piece that matches the original
+Thats neat as hell
+I work on machines that have been running for 20 or so years and once a single plastic part breaks the entire thing is useless. So they've just been running like that for a while until I just duplicated it in cad and printed it. Now we have a whole new thing to look into lol
+So i remodel the part to be replaced and often it's made using injection molding so i have to be more clever about supports.  And sometimes those features need to be accurate on both the top and bottom sides as they're reference surfaces for another part
+I'm very new to 3d printing and once I got one I realized how much it'd help out my job and my bosses are stunned already with the stuff I've been able to make, so it's a whole new world to me and I'm surprised still at how much stuff can be "replicated"
+Usually when I'm replacing something that doesn't exist and the design isn't totally my own
+If you don't mind me asking for what reasons do you print really tricky parts?
+It's a bit of extra effort and faff to do the glue stick trick but the results are totally worth it when you need it
+And you can model those supports in cad too if you want.  The other thing I have done on really tricky things is to print a support piece out of one material, say petg, then print half my part, pause the part, use glue stick to hold the previously printed part in the area it fits on the model to be supported and then resume.  I would go with standard supports with support interface layers enabled and glue stick though.  I resort to the other method when i have really tricky parts.
+awesome, you're the man
+Yep exactly, elmers glue stick is what I use
+I havent used a gluestick for printing before, is like just a good ol' stick of elmers glue you'd use in elementary school good enough?
+Yeah the bar on the right hand side lets you add gcode features
+I've used colour changes before, wonder if I could just utilize that as an easier method since I've never dabbled in gcode before
+Oh wow, glue stick is a genius idea. Is there an easy way to insert pauses in Prusaslicer or do I have to edit the gcode?
+Support interface layers set to a medium high density help.  Say 80-90% density.  You want almost a solid smooth layer but not so high density that you risk having over extrusion and bonding.  Also since this surface is basically planar the other thing you can do that is extremely effective is to insert a pause above the last support layer and then put glue stick on that support layer.  Then resume printing.  You can even do 0 z gap between support and part with that method and get very nice supported surfaces.  I often do that for nylon prints which are otherwise extremely difficult to separate supports with a single material
+It probably cannot calculate the curvature, you could sketch the profile you want on the top then offset the profile in the desired amount and then project that profile onto the mid plane and then do a lofted cut. Finally mirror the part about the mid plane
+Hey all, this is a replacement faceplate for an air compressor controller. I'm having difficulties figuring out how to make the support material come off easier in the overlay recess. There's a 1mm change in the center of the faceplate so the sticker overlay is recessed and snug. First picture is the orientation it prints in (Other side would be even more difficult) so it has to fill up only 1mm of space with support material and it is a pain in the ass to take off. 
+
+Perhaps it's not to do with the design and rather the support settings. Maybe someone has experiencing in printing supports for something similar and knows how to adjust the slicer settings to make it easier to come off?
+sadly the error message is not very helpful
+why cant I increase the angle?
+Missing the lid but i wanna make sure they're standard banana plug spaced before i commit
+I now have saved my school's lab some cash by modelling the otherwise proprietary electronics component boxes
+Brain was just updating
+Finished the underside view of a part i'm designing on freecad and i forgot how to turn spaces into hard faces + extruding to make the rest of the part
+I think my brain stopped working
+lol
+Bro wants me to model and print this.
+Using orca
+Doesn't make sense to me cuz it's 100% solid up too the 0.3mm height 
+So it wouldn't build any walls cuz there are no walls til the 0.31 mark height and above
+Bambu Air Circulation System (ACS) with built in activated carbon filter. USB powered.
+Still a work in progress
+
+i dont think Ive ever had this problem before, but as I use cura instead of prusa slicer (or whatever it is kenobi is using), i wonder if this varies from slicer to slicer?
+yeah, i guess that makes sense as the slicer would start printing the walls of that hollow profile so it can build on it with the subsequent layers
+very strange workaround.
+ok so that got me thinking what if i increase the thickness of the base to 0.4 from 0.3. that way its a layer and a half thick. technically it wouldnt print it as the 2nd layer. but it would defintely print it as the first. so i did that.  and boom! it works!
+and i would post the CAD file but this is private model ill be selling so i wont be posting it here ):
+i have it set to 0.3 thickness as my first layer will be 0.3. section analysis shows its solid. up til 0.29 u see the faintest line. and then 0.3 u see the full outlne. i believe this is normal yeah?
+Would need the original CAD model to really know (I don't have any time to check but someone else might)
+if you have the original model (i.e., with the weird slicing problem) in fusion, try and do a section analysis with the base of the support as the cutting plane and offset it by your initial layer height (or regular layer height if they are the same)
+whereas now that you've added some thickness, its going to print a solid base first before it does the hollow profile
+I think it was trying to print the hollow profile on the first layer?
+i enabled "only one wall on first layer" as a temporary clean fix. but i still would like to know how to battle this in the future. i just remade it in CAD again with a simple sketch and extrusion set to join. and still same results. 
+
+i made a after and before gif
+
+https://cdn.discordapp.com/attachments/1153903171782062112/1298396128974471260/orca-slicer_kZWflgswPT.gif?ex=67196920&is=671817a0&hm=c0b8b1d275962b1fe9b094b7ce396a11cacca931f40efebe8a1c7411defb6c54&
+
+its a CAD support. seperate from the main body. idk what im doing wrong. the entire support is all one solid body. am i wrong? am i overlooking something?
+do u guys know how to fix this? it sees it as 2 different bodies or something. so it prints over it on first layer. the rest is fine. it identifies as one body in fusion 360, as well as orca slicer. ive been stumped at this one and off.
+Hopefully this helps with some of the string action issues. I should be able to assemble tomorrow
+It could be due to pla deforming overtime, but I think I can make the neck stiffer so the string action wont change as much overtime
+They are printed in PLA
+What was it printed out of?
+I could also make the base of the neck wider
+I changed the headstock design, so I shouldn't have string buzzing anymore.
+The issue with my designs is that even with a steel rod, the neck slowly starts to flex after some months. I wonder if adding more bolts in the neck will help
+I designed a revamped version of my crescent moon guitar.
+I would like to express my gratitude, every time I struggle with Fusion 360 and ask here, you always respond within an hour and provide very helpful guidance.
+
+Just thank you for that
+yeah that would be the way, extrudes are alwayus perpendicular to the sketch. Could also have made a sketch on that front face
+okay got it, just by creating a setch on the side, creating a single line with the angle I want and using  sweeping with that line as path
+taper angle (no clue if its the right translation) seems to do something very different.
+my only idea left is creating a sketch on the side and extruding from there
+using fusion 360, I want to extrude it like this (see first image)
+but also add an angle (see second image)
+hope the drawing explains it. how can I do this?
+far from the best, for parametric catia and creo have far better surface modelling features and then there's also rhino which isn't really parametric but is brep which is also better with surface modelling. From the free software available it might be best though
+Good luck. Fusion 360 is the best one out there in terms of surface modeling.
+ive made quite a lot of things. ive gone like 2 months here without needing help. pretty proud of myself. still learning thoguh. massive learning curve.
+fusion 360
+It's not really as complicated as it seems
+Seems fusion 360 to me
+What software are you using
+Hello everyone, I am new here. What design would you be discussing on creating?

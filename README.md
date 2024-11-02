@@ -27,7 +27,7 @@ platform for analyzing and visualizing text data using state-of-the-art machine 
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/concord.git
+git clone https://github.com/boredlabsHQ/concord.git
 cd concord
 ```
 

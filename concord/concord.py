@@ -1,84 +1,81 @@
 # concord.py
 
-from bertopic import BERTopic
+import nltk
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
 from sklearn.datasets import fetch_20newsgroups
 
-from bert.bert import load_model, save_model
-
-# Configuration
-MODEL_SAVE_PATH = "bertopic_model.pkl"
-INITIAL_BATCH_SIZE = 100  # Number of documents in the initial batch
-BATCH_SIZE = 50  # Number of documents per new batch
-TOTAL_BATCHES = 10  # Total number of batches to simulate
+from bert.bert import initialize_model
 
 
-def load_data(batch_number, batch_size):
+def preprocess_documents(documents):
     """
-    Simulate loading a batch of data.
-    For demonstration, we're using the 20 Newsgroups dataset.
-    In a real-world scenario, replace this with your data loading mechanism.
+    Preprocess the documents by:
+    - Lowercasing
+    - Removing punctuation
+    - Removing stop words
+    - Lemmatizing
     """
-    newsgroups = fetch_20newsgroups(subset="all",
-                                    remove=("headers", "footers", "quotes"))
-    start = batch_number * batch_size
-    end = start + batch_size
-    if start >= len(newsgroups.data):
-        return []
-    return newsgroups.data[start:end]
+    stop_words = set(stopwords.words('english'))
+    lemmatizer = WordNetLemmatizer()
+    processed_docs = []
+
+    for doc in documents:
+        # Lowercase
+        doc = doc.lower()
+        # Tokenize
+        tokens = nltk.word_tokenize(doc)
+        # Remove punctuation and non-alphabetic tokens
+        tokens = [word for word in tokens if word.isalpha()]
+        # Remove stop words and short words
+        tokens = [
+            word for word in tokens if word not in stop_words and len(word) > 2
+        ]
+        # Lemmatize
+        tokens = [lemmatizer.lemmatize(word) for word in tokens]
+        # Rejoin tokens to form the cleaned document
+        processed_doc = ' '.join(tokens)
+        processed_docs.append(processed_doc)
+
+    return processed_docs
 
 
-def setup():
-    # Load existing model or initialize a new one
-    topic_model = load_model(MODEL_SAVE_PATH)
+def main():
+    # Load the dataset and limit to 100 documents
+    print("Loading data...")
+    newsgroups = fetch_20newsgroups(subset='all',
+                                    remove=('headers', 'footers', 'quotes'))
+    documents = newsgroups['data'][:100]  # Limit to first 100 documents
+    print(f"Loaded {len(documents)} documents.")
 
-    # Initialize data storage
-    all_documents = []
+    # Preprocess the documents
+    print("Preprocessing documents...")
+    documents = preprocess_documents(documents)
 
-    if topic_model is None:
-        # Initial batch
-        print("Processing initial batch...")
-        initial_batch = load_data(batch_number=0,
-                                  batch_size=INITIAL_BATCH_SIZE)
-        all_documents.extend(initial_batch)
+    # Initialize the BERTopic model with custom parameters
+    print("Initializing BERTopic model...")
+    topic_model = initialize_model()
 
-        # Fit the model with the initial batch
-        topic_model = BERTopic()
-        topics, probs = topic_model.fit_transform(all_documents)
+    # Fit the model on the documents
+    print("Fitting the BERTopic model...")
+    topics, probs = topic_model.fit_transform(documents)
 
-        # Save the model
-        save_model(topic_model, MODEL_SAVE_PATH)
-    else:
-        # If model exists, load existing documents if stored
-        # For simplicity, we're not storing all_documents. In a real application, consider storing them.
-        print("Existing model loaded. Starting incremental updates...")
-        # Optionally, load existing documents from a file or database
-        # all_documents = load_existing_documents()
+    # Get topic information
+    topic_info = topic_model.get_topic_info()
 
-    # Simulate incremental updates with new batches
-    for batch_num in range(1, TOTAL_BATCHES + 1):
-        print(f"\nProcessing batch {batch_num}...")
-        new_batch = load_data(batch_number=batch_num, batch_size=BATCH_SIZE)
-
-        if not new_batch:
-            print("No more data to process.")
-            break
-
-        all_documents.extend(new_batch)
-
-        # Refit the model with all documents (existing + new)
-        print("Refitting the BERTopic model with the updated dataset...")
-        topic_model = BERTopic()
-        topics, probs = topic_model.fit_transform(all_documents)
-
-        # Optionally, analyze topics
-        print(
-            f"Number of topics after batch {batch_num}: {len(set(topics)) - (1 if -1 in topics else 0)}"
-        )
-
-        # Save the updated model
-        save_model(topic_model, MODEL_SAVE_PATH)
-
-        # Optional: Integrate with Neo4j to store/update topics
-        # store_topics_in_neo4j(topic_model, batch_num)
+    # Print the main topics
+    print("\nMain Topics:")
+    for index, row in topic_info.iterrows():
+        topic_id = row['Topic']
+        if topic_id == -1:
+            continue  # Skip outliers
+        topic_freq = row['Count']
+        topic_words = topic_model.get_topic(topic_id)
+        words = ', '.join([word for word, _ in topic_words])
+        print(f"Topic {topic_id} (Frequency: {topic_freq}): {words}")
 
     print("\nTopic modeling completed.")
+
+
+if __name__ == "__main__":
+    main()

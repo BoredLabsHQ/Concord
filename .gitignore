@@ -166,3 +166,6 @@ cython_debug/
 .idea/vcs.xml
 /.idea/developer-tools.xml
 /.idea/workspace.xml
+/concord/bertopic_model.pkl
+/.idea/rust.xml
+/nltk_data/

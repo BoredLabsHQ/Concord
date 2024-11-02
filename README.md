@@ -120,6 +120,27 @@ cd concord
    poetry run pre-commit install
    ```
 
+6. **Set Up nltk Data**
+   Create nltk_data directory:
+    ```bash
+    mkdir -p /YOUR-PATH/nltk_data
+    cd /YOUR-PATH/nltk_data
+    ```
+
+   Open a Python shell and run the following commands:
+
+   ```python
+   import nltk
+   nltk.download('stopwords')
+   nltk.download('punkt')
+   nltk.download('wordnet')
+   nltk.download('punkt_tab')
+   ```
+   Add this env variable
+   ```bash
+   NLTK_DATA=/YOUR-PATH/nltk_data
+   ```
+
 ## Running the Application
 
 ### Start Docker Containers

@@ -1,44 +1,20 @@
 # bert.py
 
-import os
-
-import joblib
 from bertopic import BERTopic
 from sentence_transformers import SentenceTransformer
 
 
 def initialize_model():
     """
-    Initialize the BERTopic model.
-    You can customize the model with different parameters as needed.
+    Initialize the BERTopic model with a specified embedding model and custom parameters.
     """
-    # Using a specific embedding model for better performance
+    # Use a pre-trained SentenceTransformer model for embeddings
     embedding_model = SentenceTransformer("all-mpnet-base-v2")
 
     topic_model = BERTopic(
         embedding_model=embedding_model,
         verbose=True,
-        # You can add more parameters here
+        min_topic_size=3,  # Adjusted to allow smaller topics
+        n_gram_range=(1, 2)  # Consider unigrams and bigrams
     )
     return topic_model
-
-
-def save_model(model, path):
-    """
-    Save the BERTopic model to disk.
-    """
-    joblib.dump(model, path)
-    print(f"Model saved to {path}")
-
-
-def load_model(path):
-    """
-    Load the BERTopic model from disk.
-    """
-    if os.path.exists(path):
-        model = joblib.load(path)
-        print(f"Model loaded from {path}")
-        return model
-    else:
-        print(f"No existing model found at {path}. Initializing a new model.")
-        return None

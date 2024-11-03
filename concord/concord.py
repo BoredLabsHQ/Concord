@@ -52,7 +52,7 @@ def main():
     print("Preprocessing documents...")
     documents = preprocess_documents(documents)
 
-    # Initialize the BERTopic model with custom parameters
+    # Initialize the BERTopic model with KeyBERTInspired representation
     print("Initializing BERTopic model...")
     topic_model = initialize_model()
 
@@ -63,16 +63,26 @@ def main():
     # Get topic information
     topic_info = topic_model.get_topic_info()
 
-    # Print the main topics
-    print("\nMain Topics:")
+    # Print the main topics with importance scores
+    print("\nMain Topics with Word Importance Scores:")
     for index, row in topic_info.iterrows():
         topic_id = row['Topic']
         if topic_id == -1:
             continue  # Skip outliers
         topic_freq = row['Count']
         topic_words = topic_model.get_topic(topic_id)
-        words = ', '.join([word for word, _ in topic_words])
-        print(f"Topic {topic_id} (Frequency: {topic_freq}): {words}")
+
+        # Prepare a list of formatted word-score pairs
+        word_score_list = [
+            f"{word} ({score:.4f})" for word, score in topic_words
+        ]
+
+        # Join the pairs into a single string
+        word_score_str = ', '.join(word_score_list)
+
+        # Print the topic info and the word-score string
+        print(f"\nTopic {topic_id} (Frequency: {topic_freq}):")
+        print(f"  {word_score_str}")
 
     print("\nTopic modeling completed.")
 

@@ -18,7 +18,7 @@ Thank you for your interest in contributing to our Python open-source project! T
 
 - **PEP 8 Compliance**: Ensure your code adheres to the [PEP 8](https://www.python.org/dev/peps/pep-0008/) style guide.
 - **Consistent Naming**: Use clear and descriptive names for variables, functions, and classes.
-- **Line Length**: Limit all lines to a maximum of 79 characters.
+- **Line Length**: Limit all lines to a maximum of 120 characters.
 - **Comments and Docstrings**: Provide docstrings for modules, classes, and functions. Use comments to explain complex logic.
 
 ## Object-Oriented Design
@@ -47,7 +47,8 @@ Thank you for your interest in contributing to our Python open-source project! T
 
 ## Continuous Integration and Testing
 
-We use **GitHub Actions** to automatically run tests and linters on all pull requests and commits to the `main` branch. To ensure your contributions pass these checks, please follow the instructions below.
+We use **GitHub Actions** to automatically run tests and linters on all pull requests. To ensure your contributions pass
+these checks, please follow the instructions below.
 
 ### Prerequisites
 
@@ -117,7 +118,7 @@ We use **GitHub Actions** to automatically run tests and linters on all pull req
 
 - **Format**: Use clear and descriptive commit messages.
 
-    - Start with a short summary (50 characters max).
+    - Start with a short summary (75 characters max).
     - Follow with a blank line and a detailed description if necessary.
 
 - **Conventional Commits**: Follow the [Conventional Commits](https://www.conventionalcommits.org/) specification for consistency.

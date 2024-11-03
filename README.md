@@ -120,14 +120,16 @@ cd concord
    poetry run pre-commit install
    ```
 
-6. **Set Up nltk Data**
-   Create nltk_data directory:
-    ```bash
-    mkdir -p /YOUR-PATH/nltk_data
-    cd /YOUR-PATH/nltk_data
-    ```
+## Set Up nltk Data
 
-   Open a Python shell and run the following commands:
+Create nltk_data directory:
+
+```bash
+mkdir -p /YOUR-PATH/nltk_data
+cd /YOUR-PATH/nltk_data
+```
+
+Open a Python shell and run the following commands:
 
    ```python
    import nltk
@@ -136,7 +138,8 @@ cd concord
    nltk.download('wordnet')
    nltk.download('punkt_tab')
    ```
-   Add this env variable
+
+Add this env variable
    ```bash
    NLTK_DATA=/YOUR-PATH/nltk_data
    ```

@@ -14,7 +14,8 @@ repos:
         pass_filenames: false
         args: [ "concord/", "tests/" ]
       - id: pytest
-        name: pytest
-        entry: poetry run pytest
+        name: pytest with coverage
+        entry: poetry run python -m dotenv run -- pytest
         language: system
         pass_filenames: false
+        args: [ "--cov=concord", "--cov-report=xml" ]

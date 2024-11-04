@@ -1,11 +1,22 @@
+# docker-compose.yml
 
 services:
   neo4j:
-    image: neo4j:5.24.2
+    image: neo4j:5.19
     container_name: neo4j-dev
     ports:
       - "7474:7474"    # HTTP port for Neo4j Browser
       - "7687:7687"    # Bolt port for client connections
     environment:
-      NEO4J_AUTH: ${NEO4J_AUTH:-neo4j/dev-password}
+      - NEO4J_AUTH=${NEO4J_USER:-neo4j}/${NEO4J_PASSWORD:-dev-password}
+    restart: unless-stopped
+
+  neo4j-test:
+    image: neo4j:5.19
+    container_name: neo4j-test
+    ports:
+      - "7475:7474"    # HTTP port for Neo4j Browser (Test instance)
+      - "7688:7687"    # Bolt port for client connections (Test instance)
+    environment:
+      - NEO4J_AUTH=${NEO4J_USER:-neo4j}/${NEO4J_PASSWORD:-test-password}
     restart: unless-stopped

@@ -1,23 +1,24 @@
 # coding: utf-8
 
+from typing import Dict, List  # noqa: F401
 import importlib
 import pkgutil
-from typing import Dict, List  # noqa: F401
+
+from concord.server.apis.servers_api_base import BaseServersApi
+import openapi_server.impl
 
 from fastapi import (  # noqa: F401
     APIRouter, Body, Cookie, Depends, Form, Header, HTTPException, Path, Query,
     Response, Security, status,
 )
 
-import openapi_server
-from src.concord.server.apis.servers_api_base import BaseServersApi
-from src.concord.server.models.extra_models import TokenModel  # noqa: F401
-from src.concord.server.models.server_register_request import ServerRegisterRequest
-from src.concord.server.models.server_register_response import ServerRegisterResponse
+from concord.server.models.extra_models import TokenModel  # noqa: F401
+from concord.server.models.server_register_request import ServerRegisterRequest
+from concord.server.models.server_register_response import ServerRegisterResponse
 
 router = APIRouter()
 
-ns_pkg = openapi_server
+ns_pkg = openapi_server.impl
 for _, name, _ in pkgutil.iter_modules(ns_pkg.__path__, ns_pkg.__name__ + "."):
     importlib.import_module(name)
 
@@ -34,18 +35,18 @@ for _, name, _ in pkgutil.iter_modules(ns_pkg.__path__, ns_pkg.__name__ + "."):
         },
         409: {
             "description":
-                "Conflict if server/group with the same name exists."
+            "Conflict if a server/group with the same name exists."
         },
     },
     tags=["servers"],
-    summary="Register a new server/group on a specified platform",
+    summary="Register a new server/group",
     response_model_by_alias=True,
 )
 async def register_server(
-        server_register_request: ServerRegisterRequest = Body(None,
-                                                              description=""),
+    server_register_request: ServerRegisterRequest = Body(None,
+                                                          description=""),
 ) -> ServerRegisterResponse:
-    """Creates a new entry for a server/group, allowing configuration of the platform, server/group name, and an authentication token. Additional metadata fields are provided for further configuration."""
+    """Registers a new server/group with configurable metadata, including platform and authentication token."""
     if not BaseServersApi.subclasses:
         raise HTTPException(status_code=500, detail="Not implemented")
     return await BaseServersApi.subclasses[0]().register_server(

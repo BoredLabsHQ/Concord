@@ -11,16 +11,16 @@ def test_register_server(client: TestClient):
 
     Register a new server/group on a specified platform
     """
-    server_register_request = {
-        "webhook_url": "https://openapi-generator.tech",
-        "name": "name",
-        "description": "description",
-        "auth_token": "auth_token",
-        "platform": "matrix",
-        "contact_email": "contact_email"
-    }
-
-    headers = {}
+    # server_register_request = {
+    #     "webhook_url": "https://openapi-generator.tech",
+    #     "name": "name",
+    #     "description": "description",
+    #     "auth_token": "auth_token",
+    #     "platform": "matrix",
+    #     "contact_email": "contact_email"
+    # }
+    #
+    # headers = {}
     # uncomment below to make a request
     # response = client.request(
     #    "POST",

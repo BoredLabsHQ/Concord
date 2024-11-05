@@ -1,0 +1,13 @@
+{
+  "version": "1",
+  "name": "Concord",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ],
+  "presets": {
+    "requestType": "http",
+    "requestUrl": "localhost:8000"
+  }
+}

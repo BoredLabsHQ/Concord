@@ -2,7 +2,7 @@ import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from src.concord.server.main import app as application
+from concord.server.main import app as application
 
 
 @pytest.fixture

@@ -87,10 +87,10 @@ class ChannelRelatedResponseRelatedChannelsInner(BaseModel):
 
         _obj = cls.model_validate({
             "platform_id":
-                obj.get("platform_id"),
+            obj.get("platform_id"),
             "channel_id":
-                obj.get("channel_id"),
+            obj.get("channel_id"),
             "similarity_score":
-                obj.get("similarity_score")
+            obj.get("similarity_score")
         })
         return _obj

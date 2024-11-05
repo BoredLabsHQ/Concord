@@ -1,0 +1,25 @@
+meta {
+  name: Custom message
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8000/channels/pid1/cid1/messages
+  body: json
+  auth: none
+}
+
+headers {
+  accept: application/json
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "messages": [
+      "I made concord a nice AI plugin for Edge city",
+      "Nice, do you use ChatGPT ?"
+    ]
+  }
+}

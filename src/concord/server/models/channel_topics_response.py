@@ -12,14 +12,12 @@
 """  # noqa: E501
 
 from __future__ import annotations
-
-import json
 import pprint
 import re  # noqa: F401
+import json
+
+from pydantic import BaseModel, ConfigDict, StrictStr  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional
-
-from pydantic import BaseModel, StrictStr
-
 try:
     from typing import Self
 except ImportError:

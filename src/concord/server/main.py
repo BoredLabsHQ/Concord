@@ -13,13 +13,13 @@
 
 from fastapi import FastAPI
 
-from src.concord.server.apis.channels_api import router as ChannelsApiRouter
-from src.concord.server.apis.servers_api import router as ServersApiRouter
-from src.concord.server.apis.trending_api import router as TrendingApiRouter
+from concord.server.apis.channels_api import router as ChannelsApiRouter
+from concord.server.apis.servers_api import router as ServersApiRouter
+from concord.server.apis.trending_api import router as TrendingApiRouter
 
 app = FastAPI(
     title="Concord API",
-    description=
+    description=  # noqa: E251
     "API for Concord, an AI-powered semantic extraction and recommendation platform for networked communities.",
     version="1.0.0",
 )

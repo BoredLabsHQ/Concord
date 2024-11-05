@@ -12,17 +12,13 @@
 """  # noqa: E501
 
 from __future__ import annotations
-
-import json
 import pprint
 import re  # noqa: F401
+import json
+
+from pydantic import BaseModel, ConfigDict  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional
-
-from pydantic import BaseModel, StrictStr
-
-from src.concord.server.models.channel_related_response_related_channels_inner import \
-    ChannelRelatedResponseRelatedChannelsInner
-
+from concord.server.models.related_channel import RelatedChannel
 try:
     from typing import Self
 except ImportError:
@@ -35,13 +31,8 @@ class ChannelRelatedResponse(BaseModel):
     """
 
     # noqa: E501
-    platform_id: Optional[StrictStr] = None
-    channel_id: Optional[StrictStr] = None
-    related_channels: Optional[
-        List[ChannelRelatedResponseRelatedChannelsInner]] = None
-    __properties: ClassVar[List[str]] = [
-        "platform_id", "channel_id", "related_channels"
-    ]
+    related_channels: Optional[List[RelatedChannel]] = None
+    __properties: ClassVar[List[str]] = ["related_channels"]
 
     model_config = {
         "populate_by_name": True,
@@ -97,12 +88,8 @@ class ChannelRelatedResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "platform_id":
-                obj.get("platform_id"),
-            "channel_id":
-                obj.get("channel_id"),
             "related_channels": [
-                ChannelRelatedResponseRelatedChannelsInner.from_dict(_item)
+                RelatedChannel.from_dict(_item)
                 for _item in obj.get("related_channels")
             ] if obj.get("related_channels") is not None else None
         })

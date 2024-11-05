@@ -12,16 +12,13 @@
 """  # noqa: E501
 
 from __future__ import annotations
-
-import json
 import pprint
 import re  # noqa: F401
+import json
+
+from pydantic import BaseModel, ConfigDict, StrictStr  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional
-
-from pydantic import BaseModel, Field, StrictStr
-
-from src.concord.server.models.trending_topics_response_topics_inner import TrendingTopicsResponseTopicsInner
-
+from concord.server.models.trending_topic import TrendingTopic
 try:
     from typing import Self
 except ImportError:
@@ -34,10 +31,8 @@ class TrendingTopicsResponse(BaseModel):
     """
 
     # noqa: E501
-    time_window: Optional[StrictStr] = Field(
-        default=None,
-        description="The specified time window for trending topics.")
-    topics: Optional[List[TrendingTopicsResponseTopicsInner]] = None
+    time_window: Optional[StrictStr] = None
+    topics: Optional[List[TrendingTopic]] = None
     __properties: ClassVar[List[str]] = ["time_window", "topics"]
 
     model_config = {
@@ -95,10 +90,9 @@ class TrendingTopicsResponse(BaseModel):
 
         _obj = cls.model_validate({
             "time_window":
-                obj.get("time_window"),
-            "topics": [
-                TrendingTopicsResponseTopicsInner.from_dict(_item)
-                for _item in obj.get("topics")
-            ] if obj.get("topics") is not None else None
+            obj.get("time_window"),
+            "topics":
+            [TrendingTopic.from_dict(_item) for _item in obj.get("topics")]
+            if obj.get("topics") is not None else None
         })
         return _obj

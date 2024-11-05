@@ -1,0 +1,260 @@
+openapi: 3.1.0
+info:
+  title: Concord API
+  version: 1.0.0
+  description: API for Concord, an AI-powered semantic extraction and recommendation platform for networked communities.
+  contact:
+    name: BoredLabsHQ
+    url: https://github.com/BoredLabsHQ/Concord
+
+paths:
+  /servers/register:
+    post:
+      summary: Register a new server/group on a specified platform
+      description: Creates a new entry for a server/group, allowing configuration of the platform, server/group name, and an authentication token. Additional metadata fields are provided for further configuration.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                platform:
+                  type: string
+                  enum: [ matrix, slack, telegram, discord ]
+                  description: Name of the platform where the server/group is hosted.
+                name:
+                  type: string
+                  description: Name of the server/group.
+                auth_token:
+                  type: string
+                  description: Authentication token for accessing the platform's API.
+                description:
+                  type: string
+                  description: Optional description of the server/group.
+                contact_email:
+                  type: string
+                  format: email
+                  description: Optional contact email for server/group administration.
+                webhook_url:
+                  type: string
+                  format: uri
+                  description: Optional URL for a webhook to receive real-time updates.
+      responses:
+        '201':
+          description: Server/group registered successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  platform_id:
+                    type: string
+                    description: Unique identifier for the registered platform server/group.
+                  name:
+                    type: string
+                  platform:
+                    type: string
+                  status:
+                    type: string
+                    example: "registered"
+        '400':
+          description: Invalid input data or missing required fields.
+        '409':
+          description: Conflict error if a server/group with the same name already exists on the specified platform.
+
+  /channels/{platform_id}/{channel_id}/messages:
+    post:
+      summary: Upload messages from a specific channel for processing
+      description: Receives messages or an export of an entire channel from platforms like Matrix, Slack, Telegram, or Discord. Extracts semantics and updates topics associated with the channel.
+      parameters:
+        - name: platform_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique identifier for the platform server/group.
+        - name: channel_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the channel.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                messages:
+                  type: array
+                  items:
+                    type: string
+                  description: List of messages to process for topic extraction.
+      responses:
+        '200':
+          description: Successfully processed messages and updated topics.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  processed_messages:
+                    type: integer
+                  channel_id:
+                    type: string
+                  platform_id:
+                    type: string
+        '400':
+          description: Invalid input data.
+
+  /channels/{platform_id}/{channel_id}/related:
+    get:
+      summary: Retrieve channels discussing similar topics
+      description: Fetches a list of channels that discuss topics similar to those of the specified channel, with an option to limit the number of channels returned.
+      parameters:
+        - name: platform_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique identifier for the platform server/group.
+        - name: channel_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the channel.
+        - name: max_channels
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+          description: Maximum number of related channels to retrieve.
+      responses:
+        '200':
+          description: List of related channels.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  channel_id:
+                    type: string
+                  platform_id:
+                    type: string
+                  related_channels:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        channel_id:
+                          type: string
+                        platform_id:
+                          type: string
+                        similarity_score:
+                          type: number
+                          format: float
+                          description: Score representing the similarity to the requested channel.
+        '404':
+          description: Channel not found.
+
+  /channels/{platform_id}/{channel_id}/topics:
+    get:
+      summary: Get extracted topics for a specific channel
+      description: Returns the list of topics extracted from the specified channel.
+      parameters:
+        - name: platform_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique identifier for the platform server/group.
+        - name: channel_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of topics associated with the channel.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  channel_id:
+                    type: string
+                  platform_id:
+                    type: string
+                  topics:
+                    type: array
+                    items:
+                      type: string
+        '404':
+          description: Channel or topics not found.
+
+  /trending/topics:
+    get:
+      summary: Retrieve trending topics within a specific time window
+      description: Returns a list of trending topics along with the associated channels for a specified time window, such as a week, month, or year. The number of topics and channels can also be customized.
+      parameters:
+        - name: time_window
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [ week, month, year ]
+          description: Time window for trending topics.
+        - name: topic_limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+          description: Maximum number of trending topics to retrieve.
+        - name: channel_limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 5
+          description: Maximum number of channels per topic to retrieve.
+      responses:
+        '200':
+          description: List of trending topics and their associated channels.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  time_window:
+                    type: string
+                    description: The specified time window for trending topics.
+                  topics:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        topic:
+                          type: string
+                          description: The name of the trending topic.
+                        channels:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              channel_id:
+                                type: string
+                              platform_id:
+                                type: string
+                              popularity_score:
+                                type: number
+                                format: float
+                                description: Score indicating the channel's relevance to the topic.
+        '400':
+          description: Invalid time window or parameters.

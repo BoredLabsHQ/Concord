@@ -3,9 +3,8 @@
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
-from sklearn.datasets import fetch_20newsgroups
 
-from bert import initialize_model
+from .bert import initialize_model
 
 
 def preprocess_documents(documents):
@@ -40,12 +39,8 @@ def preprocess_documents(documents):
     return processed_docs
 
 
-def main():
+def concord(documents):
     # Load the dataset and limit to 100 documents
-    print("Loading data...")
-    newsgroups = fetch_20newsgroups(subset='all',
-                                    remove=('headers', 'footers', 'quotes'))
-    documents = newsgroups['data'][:100]  # Limit to first 100 documents
     print(f"Loaded {len(documents)} documents.")
 
     # Preprocess the documents
@@ -85,7 +80,4 @@ def main():
         print(f"  {word_score_str}")
 
     print("\nTopic modeling completed.")
-
-
-if __name__ == "__main__":
-    main()
+    return len(documents), None

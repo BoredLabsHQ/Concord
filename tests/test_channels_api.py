@@ -14,7 +14,7 @@ def test_get_channel_topics(client: TestClient):
     Get extracted topics for a specific channel
     """
 
-    headers = {}
+    # headers = {}
     # uncomment below to make a request
     # response = client.request(
     #    "GET",
@@ -31,8 +31,8 @@ def test_get_related_channels(client: TestClient):
 
     Retrieve channels discussing similar topics
     """
-    params = [("max_channels", 10)]
-    headers = {}
+    # params = [("max_channels", 10)]
+    # headers = {}
     # uncomment below to make a request
     # response = client.request(
     #    "GET",
@@ -50,9 +50,9 @@ def test_post_channel_messages(client: TestClient):
 
     Upload messages from a specific channel for processing
     """
-    channel_messages_request = {"messages": ["messages", "messages"]}
+    # channel_messages_request = {"messages": ["messages", "messages"]}
 
-    headers = {}
+    # headers = {}
     # uncomment below to make a request
     # response = client.request(
     #    "POST",

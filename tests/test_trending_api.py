@@ -10,9 +10,9 @@ def test_get_trending_topics(client: TestClient):
 
     Retrieve trending topics within a specific time window
     """
-    params = [("time_window", 'time_window_example'), ("topic_limit", 10),
-              ("channel_limit", 5)]
-    headers = {}
+    # params = [("time_window", 'time_window_example'), ("topic_limit", 10),
+    #           ("channel_limit", 5)]
+    # headers = {}
     # uncomment below to make a request
     # response = client.request(
     #    "GET",

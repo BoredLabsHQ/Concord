@@ -16,23 +16,26 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictInt  # noqa: F401
-from typing import Any, ClassVar, Dict, List, Optional
+from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr  # noqa: F401
+from typing import Any, ClassVar, Dict, List, Optional, Union
 try:
     from typing import Self
 except ImportError:
     from typing_extensions import Self
 
 
-class ChannelMessagesResponse(BaseModel):
+class RelatedChannel(BaseModel):
     """
-    ChannelMessagesResponse
+    RelatedChannel
     """
 
     # noqa: E501
-    success: Optional[StrictBool] = None
-    processed_messages: Optional[StrictInt] = None
-    __properties: ClassVar[List[str]] = ["success", "processed_messages"]
+    platform_id: Optional[StrictStr] = None
+    channel_id: Optional[StrictStr] = None
+    similarity_score: Optional[Union[StrictFloat, StrictInt]] = None
+    __properties: ClassVar[List[str]] = [
+        "platform_id", "channel_id", "similarity_score"
+    ]
 
     model_config = {
         "populate_by_name": True,
@@ -51,7 +54,7 @@ class ChannelMessagesResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
-        """Create an instance of ChannelMessagesResponse from a JSON string"""
+        """Create an instance of RelatedChannel from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -73,7 +76,7 @@ class ChannelMessagesResponse(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Dict) -> Self:
-        """Create an instance of ChannelMessagesResponse from a dict"""
+        """Create an instance of RelatedChannel from a dict"""
         if obj is None:
             return None
 
@@ -81,9 +84,11 @@ class ChannelMessagesResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "success":
-            obj.get("success"),
-            "processed_messages":
-            obj.get("processed_messages")
+            "platform_id":
+            obj.get("platform_id"),
+            "channel_id":
+            obj.get("channel_id"),
+            "similarity_score":
+            obj.get("similarity_score")
         })
         return _obj

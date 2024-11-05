@@ -12,3 +12,4 @@ additionalProperties:
   generateTests: true
   packageName: concord.server
   useSingleRequestParameter: true
+

@@ -12,14 +12,12 @@
 """  # noqa: E501
 
 from __future__ import annotations
-
-import json
 import pprint
 import re  # noqa: F401
+import json
+
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional
-
-from pydantic import BaseModel, Field, StrictStr, field_validator
-
 try:
     from typing import Self
 except ImportError:
@@ -33,9 +31,9 @@ class ServerRegisterRequest(BaseModel):
 
     # noqa: E501
     platform: Optional[StrictStr] = Field(default=None,
-                                          description="Name of the platform.")
+                                          description="Platform name.")
     name: Optional[StrictStr] = Field(default=None,
-                                      description="Name of the server/group.")
+                                      description="Server/group name.")
     auth_token: Optional[StrictStr] = Field(
         default=None, description="Authentication token.")
     description: Optional[StrictStr] = Field(

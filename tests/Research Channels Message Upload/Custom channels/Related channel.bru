@@ -1,0 +1,19 @@
+meta {
+  name: Related channel
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:8000/channels/pid1/cid1/related?max_channels=5
+  body: none
+  auth: none
+}
+
+params:query {
+  max_channels: 5
+}
+
+headers {
+  accept: application/json
+}

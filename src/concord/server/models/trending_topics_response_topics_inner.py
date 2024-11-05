@@ -95,7 +95,7 @@ class TrendingTopicsResponseTopicsInner(BaseModel):
 
         _obj = cls.model_validate({
             "topic":
-                obj.get("topic"),
+            obj.get("topic"),
             "channels": [
                 TrendingTopicsResponseTopicsInnerChannelsInner.from_dict(_item)
                 for _item in obj.get("channels")

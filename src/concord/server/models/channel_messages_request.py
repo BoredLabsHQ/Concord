@@ -12,14 +12,12 @@
 """  # noqa: E501
 
 from __future__ import annotations
-
-import json
 import pprint
 import re  # noqa: F401
+import json
+
+from pydantic import BaseModel, ConfigDict, Field, StrictStr  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional
-
-from pydantic import BaseModel, Field, StrictStr
-
 try:
     from typing import Self
 except ImportError:
@@ -33,8 +31,7 @@ class ChannelMessagesRequest(BaseModel):
 
     # noqa: E501
     messages: Optional[List[StrictStr]] = Field(
-        default=None,
-        description="List of messages to process for topic extraction.")
+        default=None, description="List of messages for topic extraction.")
     __properties: ClassVar[List[str]] = ["messages"]
 
     model_config = {

@@ -16,14 +16,13 @@ src/concord/server/models/__init__.py
 src/concord/server/models/channel_messages_request.py
 src/concord/server/models/channel_messages_response.py
 src/concord/server/models/channel_related_response.py
-src/concord/server/models/channel_related_response_related_channels_inner.py
 src/concord/server/models/channel_topics_response.py
 src/concord/server/models/extra_models.py
+src/concord/server/models/related_channel.py
 src/concord/server/models/server_register_request.py
 src/concord/server/models/server_register_response.py
+src/concord/server/models/trending_topic.py
 src/concord/server/models/trending_topics_response.py
-src/concord/server/models/trending_topics_response_topics_inner.py
-src/concord/server/models/trending_topics_response_topics_inner_channels_inner.py
 src/concord/server/security_api.py
 src/openapi_server/impl/__init__.py
 tests/conftest.py

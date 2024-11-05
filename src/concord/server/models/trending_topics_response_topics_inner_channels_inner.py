@@ -85,10 +85,10 @@ class TrendingTopicsResponseTopicsInnerChannelsInner(BaseModel):
 
         _obj = cls.model_validate({
             "platform_id":
-                obj.get("platform_id"),
+            obj.get("platform_id"),
             "channel_id":
-                obj.get("channel_id"),
+            obj.get("channel_id"),
             "popularity_score":
-                obj.get("popularity_score")
+            obj.get("popularity_score")
         })
         return _obj

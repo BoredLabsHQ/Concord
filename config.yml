@@ -1,0 +1,14 @@
+generatorName: python-fastapi
+inputSpec: openapi.yaml
+globalProperty:
+  - apis
+  - models
+additionalProperties:
+  apiKeyHeaderName: X-API-KEY
+  apiKeyAuthScheme: apiKey
+  serverPort: 8000
+  serverHost: 0.0.0.0
+  generateVirtualEnv: false
+  generateTests: true
+  packageName: concord.server
+  useSingleRequestParameter: true

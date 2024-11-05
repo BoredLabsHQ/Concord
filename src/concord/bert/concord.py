@@ -5,7 +5,7 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from sklearn.datasets import fetch_20newsgroups
 
-from bert.bert import initialize_model
+from bert import initialize_model
 
 
 def preprocess_documents(documents):

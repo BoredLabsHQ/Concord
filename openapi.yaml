@@ -1,0 +1,427 @@
+openapi: 3.1.0
+info:
+  contact:
+    name: BoredLabsHQ
+    url: https://github.com/BoredLabsHQ/Concord
+  description: "API for Concord, an AI-powered semantic extraction and recommendation\
+    \ platform for networked communities."
+  title: Concord API
+  version: 1.0.0
+servers:
+  - url: /
+paths:
+  /servers/register:
+    post:
+      description: "Creates a new entry for a server/group, allowing configuration\
+        \ of the platform, server/group name, and an authentication token. Additional\
+        \ metadata fields are provided for further configuration."
+      operationId: registerServer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServerRegisterRequest'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerRegisterResponse'
+          description: Server/group registered successfully.
+        "400":
+          description: Invalid input data or missing required fields.
+        "409":
+          description: Conflict if server/group with the same name exists.
+      summary: Register a new server/group on a specified platform
+      tags:
+        - servers
+  /channels/{platform_id}/{channel_id}/messages:
+    post:
+      description: "Receives messages or an export of an entire channel from platforms\
+        \ like Matrix, Slack, Telegram, or Discord. Extracts semantics and updates\
+        \ topics associated with the channel."
+      operationId: postChannelMessages
+      parameters:
+        - description: Unique identifier for the platform server/group.
+          explode: false
+          in: path
+          name: platform_id
+          required: true
+          schema:
+            type: string
+          style: simple
+        - description: Unique identifier of the channel.
+          explode: false
+          in: path
+          name: channel_id
+          required: true
+          schema:
+            type: string
+          style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChannelMessagesRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelMessagesResponse'
+          description: Successfully processed messages and updated topics.
+        "400":
+          description: Invalid input data.
+      summary: Upload messages from a specific channel for processing
+      tags:
+        - channels
+  /channels/{platform_id}/{channel_id}/related:
+    get:
+      description: "Fetches a list of channels that discuss topics similar to those\
+        \ of the specified channel, with an option to limit the number of channels\
+        \ returned."
+      operationId: getRelatedChannels
+      parameters:
+        - description: Unique identifier for the platform server/group.
+          explode: false
+          in: path
+          name: platform_id
+          required: true
+          schema:
+            type: string
+          style: simple
+        - description: Unique identifier of the channel.
+          explode: false
+          in: path
+          name: channel_id
+          required: true
+          schema:
+            type: string
+          style: simple
+        - description: Maximum number of related channels to retrieve.
+          explode: true
+          in: query
+          name: max_channels
+          required: false
+          schema:
+            default: 10
+            type: integer
+          style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelRelatedResponse'
+          description: List of related channels.
+        "404":
+          description: Channel not found.
+      summary: Retrieve channels discussing similar topics
+      tags:
+        - channels
+  /channels/{platform_id}/{channel_id}/topics:
+    get:
+      description: Returns the list of topics extracted from the specified channel.
+      operationId: getChannelTopics
+      parameters:
+        - description: Unique identifier for the platform server/group.
+          explode: false
+          in: path
+          name: platform_id
+          required: true
+          schema:
+            type: string
+          style: simple
+        - description: Unique identifier of the channel.
+          explode: false
+          in: path
+          name: channel_id
+          required: true
+          schema:
+            type: string
+          style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelTopicsResponse'
+          description: List of topics associated with the channel.
+        "404":
+          description: Channel or topics not found.
+      summary: Get extracted topics for a specific channel
+      tags:
+        - channels
+  /trending/topics:
+    get:
+      description: "Returns a list of trending topics along with the associated channels\
+        \ for a specified time window, such as a week, month, or year. The number\
+        \ of topics and channels can also be customized."
+      operationId: getTrendingTopics
+      parameters:
+        - description: Time window for trending topics.
+          explode: true
+          in: query
+          name: time_window
+          required: true
+          schema:
+            enum:
+              - week
+              - month
+              - year
+            type: string
+          style: form
+        - description: Maximum number of trending topics to retrieve.
+          explode: true
+          in: query
+          name: topic_limit
+          required: false
+          schema:
+            default: 10
+            type: integer
+          style: form
+        - description: Maximum number of channels per topic to retrieve.
+          explode: true
+          in: query
+          name: channel_limit
+          required: false
+          schema:
+            default: 5
+            type: integer
+          style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrendingTopicsResponse'
+          description: List of trending topics and their associated channels.
+        "400":
+          description: Invalid time window or parameters.
+      summary: Retrieve trending topics within a specific time window
+      tags:
+        - trending
+components:
+  schemas:
+    ServerRegisterRequest:
+      example:
+        webhook_url: https://openapi-generator.tech
+        name: name
+        description: description
+        auth_token: auth_token
+        platform: matrix
+        contact_email: contact_email
+      properties:
+        platform:
+          description: Name of the platform.
+          enum:
+            - matrix
+            - slack
+            - telegram
+            - discord
+          title: platform
+          type: string
+        name:
+          description: Name of the server/group.
+          title: name
+          type: string
+        auth_token:
+          description: Authentication token.
+          title: auth_token
+          type: string
+        description:
+          description: Optional description of the server/group.
+          title: description
+          type: string
+        contact_email:
+          description: Optional contact email.
+          format: email
+          title: contact_email
+          type: string
+        webhook_url:
+          description: Optional URL for webhook updates.
+          format: uri
+          title: webhook_url
+          type: string
+      title: ServerRegisterRequest
+    ServerRegisterResponse:
+      example:
+        platform_id: platform_id
+        name: name
+        platform: platform
+        status: registered
+      properties:
+        platform_id:
+          description: Unique ID for the platform server/group.
+          title: platform_id
+          type: string
+        name:
+          title: name
+          type: string
+        platform:
+          title: platform
+          type: string
+        status:
+          example: registered
+          title: status
+          type: string
+      title: ServerRegisterResponse
+    ChannelMessagesRequest:
+      example:
+        messages:
+          - messages
+          - messages
+      properties:
+        messages:
+          description: List of messages to process for topic extraction.
+          items:
+            type: string
+          type: array
+      title: ChannelMessagesRequest
+    ChannelMessagesResponse:
+      example:
+        processed_messages: 0
+        success: true
+        platform_id: platform_id
+        channel_id: channel_id
+      properties:
+        success:
+          title: success
+          type: boolean
+        processed_messages:
+          title: processed_messages
+          type: integer
+        platform_id:
+          title: platform_id
+          type: string
+        channel_id:
+          title: channel_id
+          type: string
+      title: ChannelMessagesResponse
+    ChannelRelatedResponse:
+      example:
+        platform_id: platform_id
+        related_channels:
+          - platform_id: platform_id
+            channel_id: channel_id
+            similarity_score: 0.8008282
+          - platform_id: platform_id
+            channel_id: channel_id
+            similarity_score: 0.8008282
+        channel_id: channel_id
+      properties:
+        platform_id:
+          title: platform_id
+          type: string
+        channel_id:
+          title: channel_id
+          type: string
+        related_channels:
+          items:
+            $ref: '#/components/schemas/ChannelRelatedResponse_related_channels_inner'
+          type: array
+      title: ChannelRelatedResponse
+    ChannelTopicsResponse:
+      example:
+        topics:
+          - topics
+          - topics
+        platform_id: platform_id
+        channel_id: channel_id
+      properties:
+        platform_id:
+          title: platform_id
+          type: string
+        channel_id:
+          title: channel_id
+          type: string
+        topics:
+          items:
+            type: string
+          type: array
+      title: ChannelTopicsResponse
+    TrendingTopicsResponse:
+      example:
+        time_window: time_window
+        topics:
+          - channels:
+              - platform_id: platform_id
+                channel_id: channel_id
+                popularity_score: 0.8008282
+              - platform_id: platform_id
+                channel_id: channel_id
+                popularity_score: 0.8008282
+            topic: topic
+          - channels:
+              - platform_id: platform_id
+                channel_id: channel_id
+                popularity_score: 0.8008282
+              - platform_id: platform_id
+                channel_id: channel_id
+                popularity_score: 0.8008282
+            topic: topic
+      properties:
+        time_window:
+          description: The specified time window for trending topics.
+          title: time_window
+          type: string
+        topics:
+          items:
+            $ref: '#/components/schemas/TrendingTopicsResponse_topics_inner'
+          type: array
+      title: TrendingTopicsResponse
+    ChannelRelatedResponse_related_channels_inner:
+      example:
+        platform_id: platform_id
+        channel_id: channel_id
+        similarity_score: 0.8008282
+      properties:
+        platform_id:
+          title: platform_id
+          type: string
+        channel_id:
+          title: channel_id
+          type: string
+        similarity_score:
+          format: float
+          title: similarity_score
+          type: number
+      title: ChannelRelatedResponse_related_channels_inner
+    TrendingTopicsResponse_topics_inner_channels_inner:
+      example:
+        platform_id: platform_id
+        channel_id: channel_id
+        popularity_score: 0.8008282
+      properties:
+        platform_id:
+          title: platform_id
+          type: string
+        channel_id:
+          title: channel_id
+          type: string
+        popularity_score:
+          format: float
+          title: popularity_score
+          type: number
+      title: TrendingTopicsResponse_topics_inner_channels_inner
+    TrendingTopicsResponse_topics_inner:
+      example:
+        channels:
+          - platform_id: platform_id
+            channel_id: channel_id
+            popularity_score: 0.8008282
+          - platform_id: platform_id
+            channel_id: channel_id
+            popularity_score: 0.8008282
+        topic: topic
+      properties:
+        topic:
+          title: topic
+          type: string
+        channels:
+          items:
+            $ref: '#/components/schemas/TrendingTopicsResponse_topics_inner_channels_inner'
+          type: array
+      title: TrendingTopicsResponse_topics_inner

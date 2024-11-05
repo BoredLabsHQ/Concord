@@ -162,6 +162,18 @@ docker-compose up -d
 poetry run pre-commit run -a
 ```
 
+## Development
+
+### Generating server from OpenAPI schema
+
+Install openapi-generator
+
+```bash
+openapi-generator-cli generate -c config.yml && \
+  rm -rf .flake8 docker-compose.yaml requirements.txt Dockerfile && \
+  poetry run pre-commit run -a
+```
+
 ### License
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE.md)

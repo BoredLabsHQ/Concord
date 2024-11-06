@@ -12,6 +12,7 @@
 """  # noqa: E501
 
 from fastapi import FastAPI
+from concord.server.app_lifespan import lifespan
 
 from concord.server.apis.channels_api import router as ChannelsApiRouter
 from concord.server.apis.servers_api import router as ServersApiRouter
@@ -22,6 +23,7 @@ app = FastAPI(
     description=
     "API for Concord, an AI-powered semantic extraction and recommendation platform for networked communities.",
     version="1.0.0",
+    lifespan=lifespan,
 )
 
 app.include_router(ChannelsApiRouter)

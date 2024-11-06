@@ -2,7 +2,8 @@
 
 from typing import List  # noqa: F401
 
-from concord.bert.concord import concord
+from bert.concord import concord
+from bert.model_manager import ModelManager
 from concord.server.apis.channels_api_base import BaseChannelsApi
 from concord.server.models.channel_messages_request import ChannelMessagesRequest
 from concord.server.models.channel_messages_response import ChannelMessagesResponse
@@ -71,7 +72,9 @@ class ChannelsApiImpl(BaseChannelsApi):
         channel_messages_request: ChannelMessagesRequest,
     ) -> ChannelMessagesResponse:
         """Processes a message feed from a specified channel and updates associated topics."""
-        processed_count, error = concord(channel_messages_request.messages)
+        topic_model = ModelManager.get_model()
+        processed_count, error = concord(topic_model,
+                                         channel_messages_request.messages)
         if processed_count == -1:
             return ChannelMessagesResponse(status="error", error=error)
         return ChannelMessagesResponse(platform_id=platform_id,

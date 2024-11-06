@@ -4,8 +4,6 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 
-from .bert import initialize_model
-
 
 def preprocess_documents(documents):
     """
@@ -39,17 +37,13 @@ def preprocess_documents(documents):
     return processed_docs
 
 
-def concord(documents):
+def concord(topic_model, documents):
     # Load the dataset and limit to 100 documents
     print(f"Loaded {len(documents)} documents.")
 
     # Preprocess the documents
     print("Preprocessing documents...")
     documents = preprocess_documents(documents)
-
-    # Initialize the BERTopic model with KeyBERTInspired representation
-    print("Initializing BERTopic model...")
-    topic_model = initialize_model()
 
     # Fit the model on the documents
     print("Fitting the BERTopic model...")

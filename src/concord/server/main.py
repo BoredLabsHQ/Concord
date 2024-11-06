@@ -19,7 +19,7 @@ from concord.server.apis.trending_api import router as TrendingApiRouter
 
 app = FastAPI(
     title="Concord API",
-    description=  # noqa: E251
+    description=
     "API for Concord, an AI-powered semantic extraction and recommendation platform for networked communities.",
     version="1.0.0",
 )

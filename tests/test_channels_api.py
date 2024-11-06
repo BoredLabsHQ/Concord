@@ -18,7 +18,8 @@ def test_get_channel_topics(client: TestClient):
     # uncomment below to make a request
     # response = client.request(
     #    "GET",
-    #    "/channels/{platform_id}/{channel_id}/topics".format(platform_id='platform_id_example', channel_id='channel_id_example'),
+    #    "/channels/{platform_id}/{channel_id}/topics".format(platform_id='platform_id_example',
+    #    channel_id='channel_id_example'),
     #    headers=headers,
     # )
 
@@ -36,7 +37,8 @@ def test_get_related_channels(client: TestClient):
     # uncomment below to make a request
     # response = client.request(
     #    "GET",
-    #    "/channels/{platform_id}/{channel_id}/related".format(platform_id='platform_id_example', channel_id='channel_id_example'),
+    #    "/channels/{platform_id}/{channel_id}/related".format(platform_id='platform_id_example',
+    #    channel_id='channel_id_example'),
     #    headers=headers,
     #    params=params,
     # )
@@ -56,7 +58,8 @@ def test_post_channel_messages(client: TestClient):
     # uncomment below to make a request
     # response = client.request(
     #    "POST",
-    #    "/channels/{platform_id}/{channel_id}/messages".format(platform_id='platform_id_example', channel_id='channel_id_example'),
+    #    "/channels/{platform_id}/{channel_id}/messages".format(platform_id='platform_id_example',
+    #    channel_id='channel_id_example'),
     #    headers=headers,
     #    json=channel_messages_request,
     # )

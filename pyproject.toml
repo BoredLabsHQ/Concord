@@ -10,7 +10,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = ">=3.11"
 bertopic = "^0.16.4"
 llvmlite = "0.43.0"
 numba = "0.60"
@@ -21,6 +21,7 @@ nltk = "^3.9.1"
 neomodel = "^5.3.3"
 
 [tool.poetry.group.dev.dependencies]
+python = ">=3.11"
 pytest = "^8.3.3"
 flake8 = "^7.1.1"
 pre-commit = "^4.0.1"

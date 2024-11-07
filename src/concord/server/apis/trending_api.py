@@ -42,7 +42,7 @@ async def get_trending_topics(
     topic_limit: int = Query(10, description="", alias="topic_limit"),
     channel_limit: int = Query(5, description="", alias="channel_limit"),
 ) -> TrendingTopicsResponse:
-    """Returns trending topics within a specific time window, including associated channels."""
+    """Retrieves trending topics and associated channels for a specified time window."""
     if not BaseTrendingApi.subclasses:
         raise HTTPException(status_code=500, detail="Not implemented")
     return await BaseTrendingApi.subclasses[0]().get_trending_topics(

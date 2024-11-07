@@ -7,6 +7,8 @@ src/concord/server/__init__.py
 src/concord/server/apis/__init__.py
 src/concord/server/apis/channels_api.py
 src/concord/server/apis/channels_api_base.py
+src/concord/server/apis/external_integration_api.py
+src/concord/server/apis/external_integration_api_base.py
 src/concord/server/apis/servers_api.py
 src/concord/server/apis/servers_api_base.py
 src/concord/server/apis/trending_api.py
@@ -18,9 +20,15 @@ src/concord/server/models/channel_messages_response.py
 src/concord/server/models/channel_related_response.py
 src/concord/server/models/channel_topics_response.py
 src/concord/server/models/extra_models.py
+src/concord/server/models/memory_photo.py
+src/concord/server/models/memory_request.py
+src/concord/server/models/plugin_response.py
 src/concord/server/models/related_channel.py
 src/concord/server/models/server_register_request.py
 src/concord/server/models/server_register_response.py
+src/concord/server/models/setup_complete200_response.py
+src/concord/server/models/structured.py
+src/concord/server/models/transcript_segment.py
 src/concord/server/models/trending_topic.py
 src/concord/server/models/trending_topics_response.py
 src/concord/server/security_api.py

@@ -145,8 +145,8 @@ paths:
       - channels
   /trending/topics:
     get:
-      description: "Returns trending topics within a specific time window, including\
-        \ associated channels."
+      description: Retrieves trending topics and associated channels for a specified
+        time window.
       operationId: getTrendingTopics
       parameters:
       - explode: true
@@ -188,16 +188,56 @@ paths:
       summary: Get trending topics
       tags:
       - trending
+  /process-memory:
+    post:
+      description: |
+        Processes incoming memory data from Omi and retrieves channels related to the topics within the memory.
+      operationId: processMemory
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MemoryRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PluginResponse'
+          description: Related channels list retrieved for processed memory data.
+        "400":
+          description: Invalid input data.
+      summary: Process memory data and retrieve related channels
+      tags:
+      - external_integration
+  /setup-complete:
+    get:
+      description: |
+        Indicates that the initial setup for the Concord Channel Finder app is complete.
+      operationId: setupComplete
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/setupComplete_200_response'
+          description: Setup completion acknowledgment.
+        "500":
+          description: Server error if setup could not be verified.
+      summary: Confirm setup completion for Concord Channel Finder
+      tags:
+      - external_integration
 components:
   schemas:
     ServerRegisterRequest:
       example:
-        webhook_url: https://openapi-generator.tech
-        name: name
-        description: description
-        auth_token: auth_token
         platform: matrix
-        contact_email: contact_email
+        name: server_name
+        auth_token: auth_token_example
+        description: Server description
+        contact_email: contact@example.com
+        webhook_url: https://webhook.example.com
       properties:
         platform:
           description: Platform name.
@@ -206,58 +246,48 @@ components:
           - slack
           - telegram
           - discord
-          title: platform
           type: string
         name:
           description: Server/group name.
-          title: name
           type: string
         auth_token:
           description: Authentication token.
-          title: auth_token
           type: string
         description:
           description: Optional description of the server/group.
-          title: description
           type: string
         contact_email:
           description: Optional contact email.
           format: email
-          title: contact_email
           type: string
         webhook_url:
           description: Optional URL for webhook updates.
           format: uri
-          title: webhook_url
           type: string
       title: ServerRegisterRequest
     ServerRegisterResponse:
       example:
-        platform_id: platform_id
-        name: name
-        platform: platform
+        platform_id: unique_platform_id
+        name: server_name
+        platform: matrix
         status: registered
       properties:
         platform_id:
           description: Unique ID for the platform server/group.
-          title: platform_id
           type: string
         name:
-          title: name
           type: string
         platform:
-          title: platform
           type: string
         status:
           example: registered
-          title: status
           type: string
       title: ServerRegisterResponse
     ChannelMessagesRequest:
       example:
         messages:
-        - messages
-        - messages
+        - Hello!
+        - This is a test message.
       properties:
         messages:
           description: List of messages for topic extraction.
@@ -267,25 +297,23 @@ components:
       title: ChannelMessagesRequest
     ChannelMessagesResponse:
       example:
-        processed_messages: 0
         success: true
+        processed_messages: 2
       properties:
         success:
-          title: success
           type: boolean
         processed_messages:
-          title: processed_messages
           type: integer
       title: ChannelMessagesResponse
     ChannelRelatedResponse:
       example:
         related_channels:
-        - platform_id: platform_id
-          channel_id: channel_id
-          similarity_score: 0.8008282
-        - platform_id: platform_id
-          channel_id: channel_id
-          similarity_score: 0.8008282
+        - platform_id: matrix
+          channel_id: channel_1
+          similarity_score: 0.82
+        - platform_id: discord
+          channel_id: channel_2
+          similarity_score: 0.75
       properties:
         related_channels:
           items:
@@ -294,21 +322,55 @@ components:
       title: ChannelRelatedResponse
     RelatedChannel:
       example:
-        platform_id: platform_id
-        channel_id: channel_id
-        similarity_score: 0.8008282
+        platform_id: matrix
+        channel_id: channel_1
+        similarity_score: 0.82
       properties:
         platform_id:
-          title: platform_id
           type: string
         channel_id:
-          title: channel_id
           type: string
         similarity_score:
           format: float
-          title: similarity_score
           type: number
       title: RelatedChannel
+    TrendingTopicsResponse:
+      example:
+        time_window: week
+        topics:
+        - topic: AI developments
+          channels:
+          - platform_id: telegram
+            channel_id: ai_channel
+            similarity_score: 0.85
+        - topic: Tech trends
+          channels:
+          - platform_id: discord
+            channel_id: tech_channel
+            similarity_score: 0.77
+      properties:
+        time_window:
+          type: string
+        topics:
+          items:
+            $ref: '#/components/schemas/TrendingTopic'
+          type: array
+      title: TrendingTopicsResponse
+    TrendingTopic:
+      example:
+        topic: AI developments
+        channels:
+        - platform_id: telegram
+          channel_id: ai_channel
+          similarity_score: 0.85
+      properties:
+        topic:
+          type: string
+        channels:
+          items:
+            $ref: '#/components/schemas/RelatedChannel'
+          type: array
+      title: TrendingTopic
     ChannelTopicsResponse:
       example:
         topics:
@@ -328,51 +390,321 @@ components:
             type: string
           type: array
       title: ChannelTopicsResponse
-    TrendingTopicsResponse:
+    setupComplete_200_response:
       example:
-        time_window: time_window
-        topics:
-        - channels:
-          - platform_id: platform_id
-            channel_id: channel_id
-            similarity_score: 0.8008282
-          - platform_id: platform_id
-            channel_id: channel_id
-            similarity_score: 0.8008282
-          topic: topic
-        - channels:
-          - platform_id: platform_id
-            channel_id: channel_id
-            similarity_score: 0.8008282
-          - platform_id: platform_id
-            channel_id: channel_id
-            similarity_score: 0.8008282
-          topic: topic
+        message: Setup complete
+        status: ready
       properties:
-        time_window:
-          title: time_window
+        message:
+          example: Setup complete
           type: string
-        topics:
-          items:
-            $ref: '#/components/schemas/TrendingTopic'
-          type: array
-      title: TrendingTopicsResponse
-    TrendingTopic:
+        status:
+          example: ready
+          type: string
+      title: setupComplete_200_response
+    MemoryRequest:
       example:
-        channels:
-        - platform_id: platform_id
-          channel_id: channel_id
-          similarity_score: 0.8008282
-        - platform_id: platform_id
-          channel_id: channel_id
-          similarity_score: 0.8008282
-        topic: topic
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        discarded: true
+        transcript: transcript
+        pluginsResponse:
+        - result: result
+          pluginName: pluginName
+          error: error
+          status: success
+        - result: result
+          pluginName: pluginName
+          error: error
+          status: success
+        startedAt: 2000-01-23T04:56:07.000+00:00
+        transcriptSegments:
+        - speaker: speaker
+          speaker_id: 0
+          start: 6.0274563
+          end: 1.4658129
+          text: text
+          is_user: true
+        - speaker: speaker
+          speaker_id: 0
+          start: 6.0274563
+          end: 1.4658129
+          text: text
+          is_user: true
+        structured:
+          sentiment: positive
+          keyPhrases:
+          - keyPhrases
+          - keyPhrases
+          entities:
+          - entities
+          - entities
+          additionalData:
+            key: additionalData
+        recordingFilePath: recordingFilePath
+        photos:
+        - metadata:
+            key: metadata
+          description: description
+          url: https://openapi-generator.tech
+        - metadata:
+            key: metadata
+          description: description
+          url: https://openapi-generator.tech
+        finishedAt: 2000-01-23T04:56:07.000+00:00
+        recordingFileBase64: recordingFileBase64
       properties:
-        topic:
-          title: topic
+        createdAt:
+          format: date-time
+          title: createdAt
           type: string
-        channels:
+        startedAt:
+          format: date-time
+          title: startedAt
+          type: string
+          nullable: true
+        finishedAt:
+          format: date-time
+          title: finishedAt
+          type: string
+          nullable: true
+        transcript:
+          title: transcript
+          type: string
+        transcriptSegments:
           items:
-            $ref: '#/components/schemas/RelatedChannel'
+            $ref: '#/components/schemas/TranscriptSegment'
+          title: transcriptSegments
           type: array
-      title: TrendingTopic
+        photos:
+          items:
+            $ref: '#/components/schemas/MemoryPhoto'
+          title: photos
+          type: array
+          nullable: true
+        recordingFilePath:
+          title: recordingFilePath
+          type: string
+          nullable: true
+        recordingFileBase64:
+          format: byte
+          title: recordingFileBase64
+          type: string
+          nullable: true
+        structured:
+          $ref: '#/components/schemas/Structured'
+        pluginsResponse:
+          items:
+            $ref: '#/components/schemas/PluginResponse'
+          title: pluginsResponse
+          type: array
+        discarded:
+          title: discarded
+          type: boolean
+      required:
+      - createdAt
+      - discarded
+      - pluginsResponse
+      - structured
+      title: MemoryRequest
+      TranscriptSegment:
+        type: object
+        properties:
+          text:
+            type: string
+          speaker:
+            type: string
+          speaker_id:
+            type: integer
+          is_user:
+            type: boolean
+          start:
+            type: number
+            format: float
+          end:
+            type: number
+            format: float
+        required:
+        - text
+        - speaker
+        - speaker_id
+        - is_user
+        - start
+        - end
+        title: TranscriptSegment
+      MemoryRequest:
+        type: object
+        properties:
+          createdAt:
+            type: string
+            format: date-time
+          startedAt:
+            type: string
+            format: date-time
+            nullable: true
+          finishedAt:
+            type: string
+            format: date-time
+            nullable: true
+          transcript:
+            type: string
+          transcriptSegments:
+            type: array
+            items:
+              $ref: '#/components/schemas/TranscriptSegment'
+          photos:
+            type: array
+            items:
+              $ref: '#/components/schemas/MemoryPhoto'
+            nullable: true
+          recordingFilePath:
+            type: string
+            nullable: true
+          recordingFileBase64:
+            type: string
+            format: byte
+            nullable: true
+          structured:
+            $ref: '#/components/schemas/Structured'
+          pluginsResponse:
+            type: array
+            items:
+              $ref: '#/components/schemas/PluginResponse'
+          discarded:
+            type: boolean
+        required:
+        - createdAt
+        - structured
+        - pluginsResponse
+        - discarded
+        title: MemoryRequest
+    TranscriptSegment:
+      example:
+        speaker: speaker
+        speaker_id: 0
+        start: 6.0274563
+        end: 1.4658129
+        text: text
+        is_user: true
+      properties:
+        text:
+          title: text
+          type: string
+        speaker:
+          title: speaker
+          type: string
+        speaker_id:
+          title: speaker_id
+          type: integer
+        is_user:
+          title: is_user
+          type: boolean
+        start:
+          format: float
+          title: start
+          type: number
+        end:
+          format: float
+          title: end
+          type: number
+      required:
+      - end
+      - is_user
+      - speaker
+      - speaker_id
+      - start
+      - text
+      title: TranscriptSegment
+    MemoryPhoto:
+      example:
+        metadata:
+          key: metadata
+        description: description
+        url: https://openapi-generator.tech
+      properties:
+        url:
+          description: URL link to the photo resource.
+          format: uri
+          title: url
+          type: string
+        description:
+          description: Optional description or metadata about the photo.
+          title: description
+          type: string
+        metadata:
+          additionalProperties:
+            type: string
+          description: Additional metadata in key-value format.
+          title: metadata
+      required:
+      - url
+      title: MemoryPhoto
+    Structured:
+      example:
+        sentiment: positive
+        keyPhrases:
+        - keyPhrases
+        - keyPhrases
+        entities:
+        - entities
+        - entities
+        additionalData:
+          key: additionalData
+      properties:
+        entities:
+          description: Extracted entities from the structured memory data.
+          items:
+            type: string
+          title: entities
+          type: array
+        keyPhrases:
+          description: Key phrases identified in the structured memory data.
+          items:
+            type: string
+          title: keyPhrases
+          type: array
+        sentiment:
+          description: Overall sentiment classification for the memory data.
+          enum:
+          - positive
+          - neutral
+          - negative
+          title: sentiment
+          type: string
+        additionalData:
+          additionalProperties:
+            type: string
+          description: Any additional structured data relevant to the memory.
+          title: additionalData
+      title: Structured
+    PluginResponse:
+      example:
+        result: result
+        pluginName: pluginName
+        error: error
+        status: success
+      properties:
+        pluginName:
+          description: Name of the plugin providing the response.
+          title: pluginName
+          type: string
+        result:
+          description: Result or output from the plugin's processing.
+          title: result
+          type: string
+        status:
+          description: Status indicating success or failure of the plugin operation.
+          enum:
+          - success
+          - failure
+          title: status
+          type: string
+        error:
+          description: Optional error message if the plugin operation failed.
+          title: error
+          type: string
+          nullable: true
+      required:
+      - pluginName
+      - result
+      - status
+      title: PluginResponse

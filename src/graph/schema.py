@@ -1,6 +1,8 @@
 # schema.py
+import json
 from datetime import datetime
-from typing import List, Dict, Any
+from typing import List, Union, Any, Dict
+import numpy as np
 
 from neomodel import (StructuredNode, StructuredRel, StringProperty,
                       IntegerProperty, FloatProperty, DateTimeProperty,
@@ -25,16 +27,42 @@ class RelatedToRel(StructuredRel):
     topic_trend_similarity = FloatProperty()
 
 
+class HasRel(StructuredRel):
+    pass
+
+
+class Platform(StructuredNode):
+    platform_id = StringProperty()
+    name = StringProperty()
+    description = StringProperty()
+    contact_email = StringProperty()
+    webhook_url = StringProperty()
+    auth_token = StringProperty()
+
+    # Relationships
+    channels = RelationshipFrom('Channel', 'ON_PLATFORM')
+
+    # Wrapper Functions
+    @classmethod
+    def create_platform(cls, platform_id: str, name: str, description: str,
+                        contact_email: str, webhook_url: str) -> 'Platform':
+        return cls(platform_id=platform_id,
+                   name=name,
+                   description=description,
+                   contact_email=contact_email,
+                   webhook_url=webhook_url).save()
+
+    def add_channel(self, channel_id: str):
+        self.channels.connect(Channel(channel_id=channel_id))
+
+
 # Nodes
 class Channel(StructuredNode):
-    channel_id = UniqueIdProperty()
-    platform = StringProperty()
+    channel_id = StringProperty()
     name = StringProperty()
     description = StringProperty()
     created_at = DateTimeProperty(default_now=True)
-    active_members_count = IntegerProperty()
     language = StringProperty()
-    region = StringProperty()
     activity_score = FloatProperty()
 
     # Relationships
@@ -46,25 +74,19 @@ class Channel(StructuredNode):
 
     # Wrapper Functions
     @classmethod
-    def create_channel(cls, platform: str, name: str, description: str,
-                       active_members_count: int, language: str, region: str,
-                       activity_score: float) -> 'Channel':
-        return cls(platform=platform,
+    def create_channel(cls, channel_id: str, name: str, description: str,
+                       language: str, activity_score: float) -> 'Channel':
+        return cls(channel_id=channel_id,
                    name=name,
                    description=description,
-                   active_members_count=active_members_count,
                    language=language,
-                   region=region,
                    activity_score=activity_score).save()
 
     def associate_with_topic(self, topic: 'Topic', channel_score: float,
-                             keywords_weights: List[str], message_count: int,
                              trend: str) -> None:
         self.topics.connect(
             topic, {
                 'channel_score': channel_score,
-                'keywords_weights': keywords_weights,
-                'message_count': message_count,
                 'last_updated': datetime.utcnow(),
                 'trend': trend
             })
@@ -78,6 +100,7 @@ class Channel(StructuredNode):
 
 
 class Topic(StructuredNode):
+    # Define properties
     topic_id = UniqueIdProperty()
     name = StringProperty()
     keywords = ArrayProperty()
@@ -94,13 +117,18 @@ class Topic(StructuredNode):
 
     # Wrapper Functions
     @classmethod
-    def create_topic(cls, name: str, keywords: List[str],
+    def create_topic(cls, name: str, keywords: list[dict[str, Any]],
                      bertopic_metadata: Dict[str, Any]) -> 'Topic':
         """
         Create a new topic node with the given properties.
         """
+        keywords_json_ready = [{
+            "term": kw["term"],
+            "weight": float(kw["weight"])
+        } for kw in keywords]
+        keywords_json = json.dumps(keywords_json_ready)
         return cls(name=name,
-                   keywords=keywords,
+                   keywords=keywords_json,
                    bertopic_metadata=bertopic_metadata).save()
 
     def relate_to_topic(self, other_topic: 'Topic', similarity_score: float,
@@ -130,14 +158,29 @@ class Topic(StructuredNode):
         update.topic.connect(self)
         return update
 
-    def set_topic_embedding(self, embedding: List[float]) -> None:
+    # Wrapper Functions
+    def set_topic_embedding(self, embedding: Union[List[float],
+                                                   np.ndarray]) -> None:
         """
-        Set the topic embedding vector, ensuring all values are floats.
+        Set the topic embedding vector, converting numpy.ndarray to a list of floats.
         """
+        # If it's a numpy array, convert it to a list
+        if isinstance(embedding, np.ndarray):
+            embedding = embedding.astype(float).tolist()
+
+        # Validate all elements are floats
         if not all(isinstance(val, float) for val in embedding):
             raise ValueError("All elements in topic_embedding must be floats.")
+
+        # Save the list representation
         self.topic_embedding = embedding
         self.save()
+
+    def get_topic_embedding(self) -> np.ndarray:
+        """
+        Retrieve the topic embedding as a numpy array.
+        """
+        return np.array(self.topic_embedding, dtype=float)
 
 
 class TopicUpdate(StructuredNode):

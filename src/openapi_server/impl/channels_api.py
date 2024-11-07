@@ -73,10 +73,18 @@ class ChannelsApiImpl(BaseChannelsApi):
     ) -> ChannelMessagesResponse:
         """Processes a message feed from a specified channel and updates associated topics."""
         topic_model = ModelManager.get_model()
-        processed_count, error = concord(topic_model,
-                                         channel_messages_request.messages)
+
+        # Add channel_id to the function call, keep original return variables
+        processed_count, error = concord(
+            topic_model,
+            channel_id,
+            platform_id,
+            channel_messages_request.messages,
+        )
+
         if processed_count == -1:
             return ChannelMessagesResponse(status="error", error=error)
+
         return ChannelMessagesResponse(platform_id=platform_id,
                                        channel_id=channel_id,
                                        processed_messages=processed_count,

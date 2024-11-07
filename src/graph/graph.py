@@ -1,37 +1,14 @@
 # graph.py
 import os
+from neomodel import config
 
-from neo4j import GraphDatabase
+# Get the connection details from environment variables
+DATABASE_URL = os.getenv("DATABASE_URL",
+                         "localhost:7687")  # No `bolt://` prefix here
+NEO4J_USER = os.getenv("NEO4J_USER", "neo4j")
+NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD", "dev-password")
 
 
-# Initialize Neo4j driver
 def initialize_neo4j():
-    # Get uri username and password from ENV
-    user = os.environ.get("NEO4J_USERNAME")
-    password = os.environ.get("NEO4J_PASSWORD")
-    uri = os.environ.get("NEO4J_URI")
-
-    return GraphDatabase.driver(uri, auth=(user, password))
-
-
-# Function to store topics in Neo4j
-def store_topics_in_neo4j(model, batch_num):
-    """
-    Store topics and their relationships in Neo4j.
-    """
-    driver = initialize_neo4j()
-    with driver.session() as session:
-        topics = model.get_topics()
-        for topic_num, words in topics.items():
-            if topic_num == -1:
-                continue  # -1 is usually the outlier/noise topic
-            # Create Topic node
-            session.run(
-                "MERGE (t:Topic {id: $id}) "
-                "SET t.keywords = $keywords, t.batch = $batch",
-                id=topic_num,
-                keywords=words,
-                batch=batch_num,
-            )
-    driver.close()
-    print("Topics stored in Neo4j.")
+    # Add the 'bolt://' prefix and format the URL with credentials
+    config.DATABASE_URL = f"bolt://{NEO4J_USER}:{NEO4J_PASSWORD}@{DATABASE_URL}"

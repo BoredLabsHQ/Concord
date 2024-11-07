@@ -1,9 +1,13 @@
 # concord.py
 
 from bert.pre_process import preprocess_documents
+from graph.schema import Topic
 
 
-def concord(topic_model, documents):
+def concord(
+    topic_model,
+    documents,
+):
     # Load the dataset and limit to 100 documents
     print(f"Loaded {len(documents)} documents.")
 
@@ -40,4 +44,4 @@ def concord(topic_model, documents):
         print(f"  {word_score_str}")
 
     print("\nTopic modeling completed.")
-    return len(documents), None
+    return len(documents), Topic.create_topic()

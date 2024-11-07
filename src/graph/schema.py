@@ -10,11 +10,10 @@ from neomodel import (StructuredNode, StructuredRel, StringProperty,
 
 # Relationship Models
 class AssociatedWithRel(StructuredRel):
-    channel_score = FloatProperty()
+    topic_score = FloatProperty()
     keywords_weights = ArrayProperty()
     message_count = IntegerProperty()
     last_updated = DateTimeProperty()
-    score_decay_rate = FloatProperty()
     trend = StringProperty()
 
 
@@ -60,14 +59,13 @@ class Channel(StructuredNode):
 
     def associate_with_topic(self, topic: 'Topic', channel_score: float,
                              keywords_weights: List[str], message_count: int,
-                             score_decay_rate: float, trend: str) -> None:
+                             trend: str) -> None:
         self.topics.connect(
             topic, {
                 'channel_score': channel_score,
                 'keywords_weights': keywords_weights,
                 'message_count': message_count,
                 'last_updated': datetime.utcnow(),
-                'score_decay_rate': score_decay_rate,
                 'trend': trend
             })
 
@@ -83,8 +81,8 @@ class Topic(StructuredNode):
     topic_id = UniqueIdProperty()
     name = StringProperty()
     keywords = ArrayProperty()
-    overall_score = FloatProperty()
     bertopic_metadata = JSONProperty()
+    topic_embedding = ArrayProperty()
     updated_at = DateTimeProperty(default_now=True)
 
     # Relationships
@@ -96,17 +94,24 @@ class Topic(StructuredNode):
 
     # Wrapper Functions
     @classmethod
-    def create_topic(cls, name: str, keywords: List[str], overall_score: float,
+    def create_topic(cls, name: str, keywords: List[str],
                      bertopic_metadata: Dict[str, Any]) -> 'Topic':
+        """
+        Create a new topic node with the given properties.
+        """
         return cls(name=name,
                    keywords=keywords,
-                   overall_score=overall_score,
                    bertopic_metadata=bertopic_metadata).save()
 
     def relate_to_topic(self, other_topic: 'Topic', similarity_score: float,
                         temporal_similarity: float, co_occurrence_rate: float,
                         common_channels: int,
                         topic_trend_similarity: float) -> None:
+        """
+        Create a relationship to another topic with various similarity metrics.
+        """
+        if not isinstance(other_topic, Topic):
+            raise ValueError("The related entity must be a Topic instance.")
         self.related_topics.connect(
             other_topic, {
                 'similarity_score': similarity_score,
@@ -118,9 +123,21 @@ class Topic(StructuredNode):
 
     def add_update(self, update_keywords: List[str],
                    score_delta: float) -> 'TopicUpdate':
+        """
+        Add an update to the topic with keyword changes and score delta.
+        """
         update = TopicUpdate.create_topic_update(update_keywords, score_delta)
         update.topic.connect(self)
         return update
+
+    def set_topic_embedding(self, embedding: List[float]) -> None:
+        """
+        Set the topic embedding vector, ensuring all values are floats.
+        """
+        if not all(isinstance(val, float) for val in embedding):
+            raise ValueError("All elements in topic_embedding must be floats.")
+        self.topic_embedding = embedding
+        self.save()
 
 
 class TopicUpdate(StructuredNode):

@@ -18,5 +18,5 @@ class BaseTrendingApi:
         topic_limit: int,
         channel_limit: int,
     ) -> TrendingTopicsResponse:
-        """Returns trending topics within a specific time window, including associated channels."""
+        """Retrieves trending topics and associated channels for a specified time window."""
         ...
